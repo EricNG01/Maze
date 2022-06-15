@@ -20,4 +20,12 @@ public class Cell {
     public boolean getWallState() {
         return wallState;
     }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
 }
