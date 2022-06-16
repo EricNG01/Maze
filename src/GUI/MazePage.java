@@ -6,6 +6,9 @@ import MazeRelated.Maze;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MazePage extends JFrame {
     // Window size
@@ -14,7 +17,14 @@ public class MazePage extends JFrame {
     public Color bgColor = new Color(0xFFFCF2);
     // Border color for the panels
     public Color borderColor = new Color(0xCCC5B9);
+    // Button color
     public Color buttonColor = new Color(0x403D39);
+
+    // Cell colors
+    public static Color CELL_COLOUR = new Color(0xFFFCF2);
+    public static Color WALL_COLOUR = new Color(0x403D39);
+    public static Color START_COLOUR = new Color(0xF38F68);
+    public static Color GOAL_COLOUR = new Color(0xEB5E28);
 
     private static Maze maze;
     public MazePage(int rows, int cols, boolean isBlankMaze) {
@@ -86,14 +96,13 @@ public class MazePage extends JFrame {
         CellButton.setHEIGHT(cellSize);
         CellButton.setWIDTH(cellSize);
 
-        System.out.println((int)middlePnl.getPreferredSize().getWidth() + ", " + (int)middlePnl.getPreferredSize().getHeight());
-
         int offsetX = ((int)middlePnl.getPreferredSize().getWidth() - (cellSize * cols)) / 2;
         int offsetY = ((int)middlePnl.getPreferredSize().getHeight()  - (cellSize * rows)) / 2;
-        System.out.println(offsetX + ", " + offsetY);
+
+        CellButton[][] cellButtons = createCellButton(rows, cols, offsetX, offsetY);
         for (int row = 0; row < rows; row++)
             for (int col = 0; col < cols; col++)
-                middlePnl.add(new CellButton(row, col, offsetX, offsetY));
+                middlePnl.add(cellButtons[row][col]);
 
         getContentPane().add(middlePnl, BorderLayout.CENTER);
         pack();
@@ -103,6 +112,25 @@ public class MazePage extends JFrame {
 
         // Components wiring
         mazeInfo.addActionListener(e -> new MazeInfoPage(maze.getRows(), maze.getCols()));
+        start.addActionListener(e -> {
+            System.out.println(e.getSource().toString());
+            for (int row = 0; row < rows; row++)
+                for (int col = 0; col < cols; col++)
+                    cellButtons[row][col].addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            if (e.getSource().getClass() == CellButton.class) {
+                                CellButton btn = (CellButton) e.getSource();
+                                if (!maze.getCell(btn.getRow(), btn.getCol()).getWallState()) {
+                                    maze.setStart(maze.getCell(btn.getRow(), btn.getCol()));
+                                    cellButtons[btn.getRow()][btn.getCol()].setBackground(START_COLOUR);
+                                    cellButtons[btn.getRow()][btn.getCol()].removeMouseListener(this);
+                                }
+
+                            }
+                        }
+                    });
+        });
         // End of components wiring
 
     }
@@ -114,6 +142,32 @@ public class MazePage extends JFrame {
         btn.setRolloverEnabled(false);
         return btn;
     }
+    private CellButton[][] createCellButton(int rows, int cols, int offsetX, int offsetY) {
+        CellButton[][] buttons = new CellButton[rows][cols];
+        for (int row = 0; row < rows; row++)
+            for (int col = 0; col < cols; col++) {
+                buttons[row][col] = new CellButton(row, col, offsetX, offsetY);
+                buttons[row][col].addActionListener(setWallAction(buttons, row, col));
+            }
+
+        return buttons;
+    }
+
+    private ActionListener setWallAction(CellButton[][] buttons, int row, int col) {
+        return e -> {
+            if (maze.getCell(row, col).getWallState()) {
+                buttons[row][col].setBackground(CELL_COLOUR);
+                maze.getCell(row, col).setWallState(false);
+            }
+            else {
+                buttons[row][col].setBackground(WALL_COLOUR);
+                maze.getCell(row, col).setWallState(true);
+            }
+            // Console log to check if the button functions properly
+        System.out.println("(" + maze.getCell(row,col).getRow() + ", " + maze.getCell(row,col).getCol() + "): " +maze.getCell(row,col).getWallState());
+        };
+    }
+
     public static Maze getMaze() {
         return maze;
     }

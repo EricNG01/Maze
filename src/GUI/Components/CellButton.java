@@ -4,9 +4,8 @@ import GUI.MazePage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
-public class CellButton extends JButton implements ActionListener{
+public class CellButton extends JButton{
 
     // CONSTANTS for the looking of the buttons
     private static int WIDTH, HEIGHT;
@@ -20,7 +19,7 @@ public class CellButton extends JButton implements ActionListener{
     public CellButton(int row, int col, int offsetX, int offsetY) {
         this.row = row;
         this.col = col;
-        addActionListener(this);
+//        addActionListener(this);
 
         if (MazePage.getMaze().getCell(row, col).getWallState()) setBackground(WALL_COLOUR);
         else setBackground(CELL_COLOUR);
@@ -45,15 +44,12 @@ public class CellButton extends JButton implements ActionListener{
         HEIGHT = height;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (MazePage.getMaze().getCell(row, col).getWallState()) {
-            setBackground(CELL_COLOUR);
-            MazePage.getMaze().getCell(row, col).setWallState(false);
-        }
-        else {
-            setBackground(WALL_COLOUR);
-            MazePage.getMaze().getCell(row, col).setWallState(true);
-        }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
     }
 }

@@ -2,7 +2,7 @@ package MazeRelated;
 
 import java.util.*;
 
-public class CreateMaze {
+public class CreateMaze{
     /***
      * Using binary tree algorithm to generate a maze
      * Ref: <a href="https://medium.com/analytics-vidhya/maze-generations-algorithms-and-visualizations-9f5e88a3ae37"> maze generation algorithm</a>
@@ -115,5 +115,39 @@ public class CreateMaze {
         }
 
         return maze;
+    }
+
+    /***
+     * Compute the dead end percentage of the maze
+     * A dead end cell is defined as a reachable cell (non-wall cell) which has three walls surrounded
+     * The equation: (Number of dead end) / (Number of reachable cell) * 100
+     * The percentage is rounded up to 2 decimal places
+     * @param maze the current maze on the maze page
+     * @return the dead end percentage of the maze
+     */
+    public static double deadEndPercentage(Maze maze) {
+        int reachable = 0;
+        int deadEnd = 0;
+        for (int row = 0; row < maze.getRows(); row++)
+            for (int col = 0; col < maze.getCols(); col++)
+                if (!maze.getCell(row, col).getWallState()) {
+                    reachable++;
+
+                    int wall = 0;
+                    int[] dx = {0, 1, 0, -1};
+                    int[] dy = {-1, 0, 1, 0};
+
+                    for (int i = 0; i < 4; i++) {
+
+                        // Skip the iteration if the index is out of bound
+                        if (row + dy[i] > maze.getRows() - 1 || row + dy[i] < 0
+                            || col + dx[i] > maze.getCols() - 1 || col + dx[i] < 0) continue;
+
+                        if (maze.getCell(row + dy[i], col + dx[i]).getWallState())
+                                wall++;
+                    }
+                    if (wall == 3) deadEnd++;
+                }
+        return Math.round((double)deadEnd/reachable * 100);
     }
 }

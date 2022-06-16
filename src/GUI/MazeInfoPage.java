@@ -1,5 +1,7 @@
 package GUI;
 
+import MazeRelated.CreateMaze;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -22,13 +24,14 @@ public class MazeInfoPage extends JFrame {
 
         JLabel rowsLabel = new JLabel("Rows: " + rows);
         JLabel colsLabel = new JLabel("Columns: " + cols);
+        JLabel deadEnd = new JLabel("Dead end percentage: " + CreateMaze.deadEndPercentage(MazePage.getMaze()) + "%");
 
         rowsLabel.setBounds(10, 20, 230, 50);
         colsLabel.setBounds(10, 90, 230, 50);
-
+        deadEnd.setBounds(10, 160, 230, 50);
         mainPnl.add(rowsLabel);
         mainPnl.add(colsLabel);
-
+        mainPnl.add(deadEnd);
 
 
         getContentPane().add(mainPnl);
