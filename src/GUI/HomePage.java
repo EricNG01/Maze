@@ -101,7 +101,7 @@ public class HomePage extends JFrame {
             try {
                 int rows = Integer.parseInt(rowsTextField.getText());
                 int cols = Integer.parseInt(colsTextField.getText());
-                if ( rows < 2 || rows > 100 || cols < 2 || cols > 100)
+                if ( rows < 5 || rows > 100 || cols < 5 || cols > 100 || rows % 2 == 0 || cols % 2 == 0)
                     throw new textFieldException();
                 rowsTextField.setText("");
                 colsTextField.setText("");
@@ -114,7 +114,7 @@ public class HomePage extends JFrame {
                         "", JOptionPane.ERROR_MESSAGE);
             } catch (textFieldException e) {
                 JOptionPane.showMessageDialog(this,
-                        "Please enter a valid value for rows and columns\nRange: 2 - 100",
+                        "Please enter an odd number for rows and columns\nRange: 5 - 99",
                         "", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -123,7 +123,7 @@ public class HomePage extends JFrame {
             try {
                 int rows = Integer.parseInt(rowsTextField.getText());
                 int cols = Integer.parseInt(colsTextField.getText());
-                if ( rows < 5 || rows > 100 || cols < 5 || cols > 100)
+                if ( rows < 5 || rows > 100 || cols < 5 || cols > 100 || rows % 2 == 0 || cols % 2 == 0)
                     throw new textFieldException();
                 rowsTextField.setText("");
                 colsTextField.setText("");
@@ -136,7 +136,7 @@ public class HomePage extends JFrame {
                         "", JOptionPane.ERROR_MESSAGE);
             } catch (textFieldException e) {
                 JOptionPane.showMessageDialog(this,
-                        "Please enter a valid value for rows and columns\nRange: 5 - 100",
+                        "Please enter an odd number for rows and columns\nRange: 5 - 99",
                         "", JOptionPane.ERROR_MESSAGE);
             }
         });
