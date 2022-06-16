@@ -6,11 +6,10 @@ import MazeRelated.Maze;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-public class MazePage extends JFrame {
+public class MazePage extends JFrame{
     // Window size
     Dimension windowSize = new Dimension(1400, 1080);
     // Background color for the panels
@@ -27,6 +26,10 @@ public class MazePage extends JFrame {
     public static Color GOAL_COLOUR = new Color(0xEB5E28);
 
     private static Maze maze;
+    // JButton
+    // Flag variables
+    private boolean choosingStartingPoint = false;
+    private boolean choosingGoal = false;
 
     /**
      * Constructor of the MazePage class. It is a window for drawing a maze
@@ -119,25 +122,8 @@ public class MazePage extends JFrame {
 
         // Components wiring
         mazeInfo.addActionListener(e -> new MazeInfoPage(maze.getRows(), maze.getCols()));
-        start.addActionListener(e -> {
-            System.out.println(e.getSource().toString());
-            for (int row = 0; row < rows; row++)
-                for (int col = 0; col < cols; col++)
-                    cellButtons[row][col].addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            if (e.getSource().getClass() == CellButton.class) {
-                                CellButton btn = (CellButton) e.getSource();
-                                if (!maze.getCell(btn.getRow(), btn.getCol()).getWallState()) {
-                                    maze.setStart(maze.getCell(btn.getRow(), btn.getCol()));
-                                    cellButtons[btn.getRow()][btn.getCol()].setBackground(START_COLOUR);
-                                    cellButtons[btn.getRow()][btn.getCol()].removeMouseListener(this);
-                                }
-
-                            }
-                        }
-                    });
-        });
+        start.addActionListener(e -> choosingStartingPoint = true);
+        goal.addActionListener(e -> choosingGoal = true);
         // End of components wiring
 
     }
@@ -162,16 +148,70 @@ public class MazePage extends JFrame {
 
     private ActionListener setWallAction(CellButton[][] buttons, int row, int col) {
         return e -> {
-            if (maze.getCell(row, col).getWallState()) {
-                buttons[row][col].setBackground(CELL_COLOUR);
-                maze.getCell(row, col).setWallState(false);
+            if (choosingStartingPoint) {
+
+                // Display an error message if users choose a wall
+                if (maze.getCell(row, col).getWallState()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please select a non-wall cell",
+                            "Invalid starting point",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    // Normalise the starting point if there already have one
+                    if (maze.getStart() != null) {
+                        buttons[maze.getStart().getRow()][maze.getStart().getCol()].setBackground(CELL_COLOUR);
+                        buttons[maze.getStart().getRow()][maze.getStart().getCol()].setEnabled(true);
+                    }
+
+                    // Store the chosen starting point into the maze
+                    maze.setStart(maze.getCell(row, col));
+                    // Change the color of the chosen cell
+                    buttons[row][col].setBackground(START_COLOUR);
+                    // Disable the chosen cell (button)
+                    buttons[row][col].setEnabled(false);
+                }
+                // Assign false to the flag which indicates the users finish choosing the starting point
+                choosingStartingPoint = false;
+            }
+            else if (choosingGoal) {
+
+                // Display an error message if users choose a wall
+                if (maze.getCell(row, col).getWallState()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Please select a non-wall cell",
+                            "Invalid starting point",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    // Normalise the starting point if there already have one
+                    if (maze.getGoal() != null) {
+                        buttons[maze.getGoal().getRow()][maze.getGoal().getCol()].setBackground(CELL_COLOUR);
+                        buttons[maze.getGoal().getRow()][maze.getGoal().getCol()].setEnabled(true);
+                    }
+
+                    // Store the chosen starting point into the maze
+                    maze.setGoal(maze.getCell(row, col));
+                    // Change the color of the chosen cell
+                    buttons[row][col].setBackground(GOAL_COLOUR);
+                    // Disable the chosen cell (button)
+                    buttons[row][col].setEnabled(false);
+                }
+                // Assign false to the flag which indicates the users finish choosing the starting point
+                choosingGoal = false;
             }
             else {
-                buttons[row][col].setBackground(WALL_COLOUR);
-                maze.getCell(row, col).setWallState(true);
+                if (maze.getCell(row, col).getWallState()) {
+                    buttons[row][col].setBackground(CELL_COLOUR);
+                    maze.getCell(row, col).setWallState(false);
+                }
+                else {
+                    buttons[row][col].setBackground(WALL_COLOUR);
+                    maze.getCell(row, col).setWallState(true);
+                }
             }
             // Console log to check if the button functions properly
-        System.out.println("(" + maze.getCell(row,col).getRow() + ", " + maze.getCell(row,col).getCol() + "): " +maze.getCell(row,col).getWallState());
+//        System.out.println("(" + maze.getCell(row,col).getRow() + ", " + maze.getCell(row,col).getCol() + "): " +maze.getCell(row,col).getWallState());
         };
     }
 
@@ -182,4 +222,5 @@ public class MazePage extends JFrame {
     public static Maze getMaze() {
         return maze;
     }
+
 }
