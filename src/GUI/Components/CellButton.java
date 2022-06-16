@@ -9,8 +9,7 @@ import java.awt.event.*;
 public class CellButton extends JButton implements ActionListener{
 
     // CONSTANTS for the looking of the buttons
-    private int WIDTH = 40;
-    private int HEIGHT = 40;
+    private static int WIDTH, HEIGHT;
     public static Color CELL_COLOUR = new Color(0xFFFCF2);
     public static Color WALL_COLOUR = new Color(0x403D39);
     public static Color BORDER_COLOUR = new Color(0xCCC5B9);
@@ -18,14 +17,14 @@ public class CellButton extends JButton implements ActionListener{
 
 
     private final int row, col;
-    public CellButton(int row, int col) {
+    public CellButton(int row, int col, int offsetX, int offsetY) {
         this.row = row;
         this.col = col;
         addActionListener(this);
 
         if (MazePage.getMaze().getCell(row, col).getWallState()) setBackground(WALL_COLOUR);
         else setBackground(CELL_COLOUR);
-        setBounds( (col + 1) * (WIDTH), (row + 1) * (HEIGHT), WIDTH, HEIGHT );
+        setBounds( col * (WIDTH) + offsetX, row * (HEIGHT) + offsetY, WIDTH, HEIGHT );
 
         setBorder(BorderFactory.createMatteBorder(1,1,1,1, BORDER_COLOUR));
         setFocusPainted(false);
@@ -33,17 +32,17 @@ public class CellButton extends JButton implements ActionListener{
 
     /***
      * Set the width of the cell
-     * @param WIDTH the width of the cell
+     * @param width the width of the cell
      */
-    public void setWIDTH(int WIDTH) {
-        this.WIDTH = WIDTH;
+    public static void setWIDTH(int width) {
+        WIDTH = width;
     }
     /***
      * Set the height of the cell
-     * @param HEIGHT the height of the cell
+     * @param height the height of the cell
      */
-    public void setHEIGHT(int HEIGHT) {
-        this.HEIGHT = HEIGHT;
+    public static void setHEIGHT(int height) {
+        HEIGHT = height;
     }
 
     @Override

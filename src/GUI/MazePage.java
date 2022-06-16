@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class MazePage extends JFrame {
     // Window size
-    Dimension windowSize = new Dimension(1000, 1000);
+    Dimension windowSize = new Dimension(1400, 1080);
     // Background color for the panels
     public Color bgColor = new Color(0xFFFCF2);
     // Border color for the panels
@@ -31,13 +31,12 @@ public class MazePage extends JFrame {
         else {
             maze = CreateMaze.blankMaze(new Maze(rows, cols));
         }
+
         // The panel in the left on this page
         JPanel leftPnl = new JPanel();
         leftPnl.setLayout(null);
         leftPnl.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, borderColor));
-        leftPnl.setMinimumSize(new Dimension(200, 1000));
-        leftPnl.setMaximumSize(new Dimension(200, 1000));
-        leftPnl.setPreferredSize(new Dimension(200, 1000));
+        leftPnl.setPreferredSize(new Dimension(200, 1080));
 
         JButton start = createButton("Starting Point");
         JButton goal = createButton("Goal");
@@ -71,16 +70,36 @@ public class MazePage extends JFrame {
 
         // The panel in the middle on this page
         JPanel middlePnl = new JPanel();
+        middlePnl.setPreferredSize(new Dimension(1000, 1080));
         middlePnl.setLayout(null);
         middlePnl.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, borderColor));
+
+        // The cell has chosen to be a square
+        // So the width and height of the cell are the same
+        int cellSize;
+        if (rows > cols) {
+            cellSize = ((int) middlePnl.getPreferredSize().getWidth() - 100) / rows;
+        }
+        else {
+            cellSize = ((int) middlePnl.getPreferredSize().getWidth() - 100) / cols;
+        }
+        CellButton.setHEIGHT(cellSize);
+        CellButton.setWIDTH(cellSize);
+
+        System.out.println((int)middlePnl.getPreferredSize().getWidth() + ", " + (int)middlePnl.getPreferredSize().getHeight());
+
+        int offsetX = ((int)middlePnl.getPreferredSize().getWidth() - (cellSize * cols)) / 2;
+        int offsetY = ((int)middlePnl.getPreferredSize().getHeight()  - (cellSize * rows)) / 2;
+        System.out.println(offsetX + ", " + offsetY);
         for (int row = 0; row < rows; row++)
             for (int col = 0; col < cols; col++)
-                middlePnl.add(new CellButton(row, col));
+                middlePnl.add(new CellButton(row, col, offsetX, offsetY));
 
         getContentPane().add(middlePnl, BorderLayout.CENTER);
         pack();
-        setLocation(new Point(300, 30));
+        setLocation(new Point(300, 0));
         setVisible(true);
+        setResizable(false);
 
         // Components wiring
         mazeInfo.addActionListener(e -> new MazeInfoPage(maze.getRows(), maze.getCols()));

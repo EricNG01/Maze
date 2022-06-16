@@ -5,6 +5,7 @@ import java.util.*;
 public class CreateMaze {
     /***
      * Using binary tree algorithm to generate a maze
+     * Ref: <a href="https://medium.com/analytics-vidhya/maze-generations-algorithms-and-visualizations-9f5e88a3ae37"> maze generation algorithm</a>
      * @param rows, the height of the maze
      * @param cols, the width of the maze
      * @return an auto-generated maze
@@ -16,6 +17,7 @@ public class CreateMaze {
 
         // 2D array to identify the visited cells during the algorithm
         boolean[][] visited = new boolean[rows][cols];
+
         // Initialize the 2D array
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
@@ -96,11 +98,18 @@ public class CreateMaze {
         return maze;
     }
 
+    /***
+     * Create a blank maze bounded with 4 walls
+     * @param maze the current maze on the maze page
+     * @return a bounded maze
+     */
     public static Maze blankMaze (Maze maze) {
 
         for (int i = 0; i < maze.getRows(); i++) {
             maze.getCell(i, 0).setWallState(true);
             maze.getCell(i, maze.getCols() - 1).setWallState(true);
+        }
+        for (int i = 0; i < maze.getCols(); i++) {
             maze.getCell(0, i).setWallState(true);
             maze.getCell(maze.getRows() - 1, i).setWallState(true);
         }

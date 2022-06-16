@@ -15,7 +15,10 @@ public class HomePage extends JFrame {
     // Border color for the panels
     public Color borderColor = new Color(0xCCC5B9);
     public Color buttonColor = new Color(0x403D39);
-
+    private final int MAX_ROWS = 101;
+    private final int MAX_COLS = 101;
+    private final int MIN_ROWS = 5;
+    private final int MIN_COLS = 5;
     public HomePage() {
 
         setTitle("Setup Maze");
@@ -101,7 +104,7 @@ public class HomePage extends JFrame {
             try {
                 int rows = Integer.parseInt(rowsTextField.getText());
                 int cols = Integer.parseInt(colsTextField.getText());
-                if ( rows < 5 || rows > 100 || cols < 5 || cols > 100 || rows % 2 == 0 || cols % 2 == 0)
+                if ( rows < MIN_ROWS || rows > MAX_ROWS || cols < MIN_COLS || cols > MAX_COLS || rows % 2 == 0 || cols % 2 == 0)
                     throw new textFieldException();
                 rowsTextField.setText("");
                 colsTextField.setText("");
@@ -114,7 +117,7 @@ public class HomePage extends JFrame {
                         "", JOptionPane.ERROR_MESSAGE);
             } catch (textFieldException e) {
                 JOptionPane.showMessageDialog(this,
-                        "Please enter an odd number for rows and columns\nRange: 5 - 99",
+                        "Please enter an odd number for rows and columns\nRange: 5 - 101",
                         "", JOptionPane.ERROR_MESSAGE);
             }
         });
@@ -123,7 +126,7 @@ public class HomePage extends JFrame {
             try {
                 int rows = Integer.parseInt(rowsTextField.getText());
                 int cols = Integer.parseInt(colsTextField.getText());
-                if ( rows < 5 || rows > 100 || cols < 5 || cols > 100 || rows % 2 == 0 || cols % 2 == 0)
+                if ( rows < MIN_ROWS || rows > MAX_ROWS || cols < MIN_COLS || cols > MAX_COLS || rows % 2 == 0 || cols % 2 == 0)
                     throw new textFieldException();
                 rowsTextField.setText("");
                 colsTextField.setText("");
@@ -136,7 +139,7 @@ public class HomePage extends JFrame {
                         "", JOptionPane.ERROR_MESSAGE);
             } catch (textFieldException e) {
                 JOptionPane.showMessageDialog(this,
-                        "Please enter an odd number for rows and columns\nRange: 5 - 99",
+                        "Please enter an odd number for rows and columns\nRange: 5 - 101",
                         "", JOptionPane.ERROR_MESSAGE);
             }
         });
