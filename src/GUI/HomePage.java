@@ -6,14 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class HomePage extends JFrame {
     // Background color for the homePage
     public Color bgColor = new Color(0xFFFCF2);
-    // Border color for the panels
-    public Color borderColor = new Color(0xCCC5B9);
     public Color buttonColor = new Color(0x403D39);
     private final int MAX_ROWS = 101;
     private final int MAX_COLS = 101;
@@ -35,8 +31,10 @@ public class HomePage extends JFrame {
         mazeSetupPnl.setBackground(bgColor);
         mazeSetupPnl.setPreferredSize(new Dimension(250, 250));
 
-        final JFormattedTextField rowsTextField = new JFormattedTextField();
-        final JFormattedTextField colsTextField = new JFormattedTextField();
+        final JTextField rowsTextField = new JTextField();
+        final JTextField colsTextField = new JTextField();
+        final JTextField mazeNameTextField = new JTextField();
+        final JTextField authorTextField = new JTextField();
 
         JButton blank = createButton("Blank");
         JButton autoGen = createButton("Auto");
@@ -55,13 +53,21 @@ public class HomePage extends JFrame {
         mazeSetupPnl.add(new JLabel("ROWS"), gbc);
         gbc.gridy = 1;
         mazeSetupPnl.add(new JLabel("COLUMNS"), gbc);
+        gbc.gridy = 2;
+        mazeSetupPnl.add(new JLabel("Maze name"), gbc);
+        gbc.gridy = 3;
+        mazeSetupPnl.add(new JLabel("Author"), gbc);
         gbc.gridx = 1;
         gbc.gridy = 0;
         mazeSetupPnl.add(rowsTextField, gbc);
         gbc.gridy = 1;
         mazeSetupPnl.add(colsTextField, gbc);
-        gbc.gridx = 0;
         gbc.gridy = 2;
+        mazeSetupPnl.add(mazeNameTextField, gbc);
+        gbc.gridy = 3;
+        mazeSetupPnl.add(authorTextField, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 4;
         mazeSetupPnl.add(autoGen, gbc);
         gbc.gridx = 1;
         mazeSetupPnl.add(blank, gbc);
@@ -84,12 +90,7 @@ public class HomePage extends JFrame {
                     e.consume();
             }
         });
-        rowsTextField.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                rowsTextField.setText("");
-            }
-        });
+
         colsTextField.addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -98,10 +99,20 @@ public class HomePage extends JFrame {
                     e.consume();
             }
         });
-        colsTextField.addMouseListener(new MouseAdapter() {
+        mazeNameTextField.addKeyListener(new KeyAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                colsTextField.setText("");
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE))
+                    e.consume();
+            }
+        });
+        authorTextField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char c = e.getKeyChar();
+                if (!(Character.isLetterOrDigit(c) || c == KeyEvent.VK_BACK_SPACE || c == KeyEvent.VK_DELETE))
+                    e.consume();
             }
         });
 
@@ -109,6 +120,9 @@ public class HomePage extends JFrame {
             try {
                 int rows = Integer.parseInt(rowsTextField.getText());
                 int cols = Integer.parseInt(colsTextField.getText());
+                String mazeName = mazeNameTextField.getText();
+                String author = authorTextField.getText();
+
                 if ( rows < MIN_ROWS || rows > MAX_ROWS || cols < MIN_COLS || cols > MAX_COLS || rows % 2 == 0 || cols % 2 == 0)
                     throw new textFieldException();
                 rowsTextField.setText("");
@@ -116,7 +130,7 @@ public class HomePage extends JFrame {
 
 //                System.out.println("auto-gen, rows: " + rows + ", cols: " + cols);
 
-                new MazePage(rows, cols, false);
+                new MazePage(rows, cols, mazeName, author, false);
                 setVisible(true);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this,
@@ -133,6 +147,8 @@ public class HomePage extends JFrame {
             try {
                 int rows = Integer.parseInt(rowsTextField.getText());
                 int cols = Integer.parseInt(colsTextField.getText());
+                String mazeName = mazeNameTextField.getText();
+                String author = authorTextField.getText();
                 if ( rows < MIN_ROWS || rows > MAX_ROWS || cols < MIN_COLS || cols > MAX_COLS || rows % 2 == 0 || cols % 2 == 0)
                     throw new textFieldException();
                 rowsTextField.setText("");
@@ -140,7 +156,7 @@ public class HomePage extends JFrame {
 
 //                System.out.println("auto-gen, rows: " + rows + ", cols: " + cols);
 
-                new MazePage(rows, cols, true);
+                new MazePage(rows, cols, mazeName, author, true);
                 setVisible(true);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this,

@@ -1,5 +1,7 @@
 package MazeRelated;
 
+import java.time.LocalDateTime;
+
 /**
  * This is the class to create a Maze object
  */
@@ -8,16 +10,24 @@ public class Maze {
     private final int rows, cols;
     private Cell goal = null;
     private Cell start = null;
+    private final String author;
+    private final String mazeName;
+    private final LocalDateTime createdDatetime;
+    private LocalDateTime lastEditedDatetime;
 
     /**
      * The constructor of a maze object
      * @param rows the height of the maze
      * @param cols the width of the maze
      */
-    public Maze(int rows, int cols) {
+    public Maze(int rows, int cols, String mazeName, String author) {
         maze = new Cell[rows][cols];
         this.rows = rows;
         this.cols = cols;
+        this.mazeName = mazeName;
+        this.author = author;
+        createdDatetime = LocalDateTime.now();
+        lastEditedDatetime = createdDatetime;
         mazeInitialization(maze, rows, cols);
     }
 
@@ -64,5 +74,21 @@ public class Maze {
      */
     public int getCols() {
         return cols;
+    }
+
+    public void setLastEditedDatetime(LocalDateTime dateTime) {
+        lastEditedDatetime = dateTime;
+    }
+    public LocalDateTime getCreatedDatetime() {
+        return createdDatetime;
+    }
+    public LocalDateTime getLastEditedDatetime() {
+        return lastEditedDatetime;
+    }
+    public String getMazeName() {
+        return mazeName;
+    }
+    public String getAuthor() {
+        return author;
     }
 }

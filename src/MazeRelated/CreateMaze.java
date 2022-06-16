@@ -13,7 +13,7 @@ public class CreateMaze{
      * @param cols, the width of the maze
      * @return an auto-generated maze
      */
-    public static Maze autoGenMaze (int rows, int cols) {
+    public static Maze autoGenMaze (int rows, int cols, String mazeName, String author) {
         // the change in x and y coordinates for four directions
         int[] dx = new int[]{0, 2, 0, -2};
         int[] dy = new int[]{-2, 0, 2, 0};
@@ -26,7 +26,7 @@ public class CreateMaze{
             for (int j = 0; j < cols; j++)
                 visited[i][j] = false;
 
-        Maze maze = blankMaze(new Maze (rows, cols));
+        Maze maze = blankMaze(new Maze (rows, cols, mazeName, author));
 
         // Randomly choose the starting cell
         Random rand = new Random();

@@ -6,7 +6,6 @@ import MazeRelated.Maze;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MazePage extends JFrame{
@@ -27,6 +26,7 @@ public class MazePage extends JFrame{
 
     private static Maze maze;
     // JButton
+    private final JButton start, goal;
     // Flag variables
     private boolean choosingStartingPoint = false;
     private boolean choosingGoal = false;
@@ -37,7 +37,7 @@ public class MazePage extends JFrame{
      * @param cols width of the maze
      * @param isBlankMaze true if user select a blank maze, false otherwise
      */
-    public MazePage(int rows, int cols, boolean isBlankMaze) {
+    public MazePage(int rows, int cols, String mazeName, String author, boolean isBlankMaze) {
 
         setTitle("Maze");
         setMinimumSize(windowSize);
@@ -46,10 +46,10 @@ public class MazePage extends JFrame{
 
         // If the user choose auto-generation, run the algorithm to generate a maze
         if (!isBlankMaze) {
-            maze = CreateMaze.autoGenMaze(rows, cols);
+            maze = CreateMaze.autoGenMaze(rows, cols, mazeName, author);
         }
         else {
-            maze = CreateMaze.blankMaze(new Maze(rows, cols));
+            maze = CreateMaze.blankMaze(new Maze(rows, cols, mazeName, author));
         }
 
         // The panel in the left on this page
@@ -58,8 +58,8 @@ public class MazePage extends JFrame{
         leftPnl.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 0, borderColor));
         leftPnl.setPreferredSize(new Dimension(200, 1080));
 
-        JButton start = createButton("Starting Point");
-        JButton goal = createButton("Goal");
+        start = createButton("Starting Point");
+        goal = createButton("Goal");
         JButton logo = createButton("Insert a logo");
         JButton startImage = createButton("Set Starting Point image");
         JButton goalImage = createButton("Set Goal image");
@@ -122,8 +122,14 @@ public class MazePage extends JFrame{
 
         // Components wiring
         mazeInfo.addActionListener(e -> new MazeInfoPage(maze.getRows(), maze.getCols()));
-        start.addActionListener(e -> choosingStartingPoint = true);
-        goal.addActionListener(e -> choosingGoal = true);
+        start.addActionListener(e -> {
+            choosingStartingPoint = true;
+            start.setEnabled(false);
+        });
+        goal.addActionListener(e -> {
+            choosingGoal = true;
+            goal.setEnabled(false);
+        });
         // End of components wiring
 
     }
@@ -173,6 +179,7 @@ public class MazePage extends JFrame{
                 }
                 // Assign false to the flag which indicates the users finish choosing the starting point
                 choosingStartingPoint = false;
+                start.setEnabled(true);
             }
             else if (choosingGoal) {
 
@@ -199,6 +206,7 @@ public class MazePage extends JFrame{
                 }
                 // Assign false to the flag which indicates the users finish choosing the starting point
                 choosingGoal = false;
+                goal.setEnabled(true);
             }
             else {
                 if (maze.getCell(row, col).getWallState()) {
