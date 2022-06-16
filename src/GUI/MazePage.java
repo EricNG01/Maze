@@ -1,14 +1,11 @@
 package GUI;
 
 import GUI.Components.CellButton;
-import MazeRelated.Cell;
 import MazeRelated.CreateMaze;
 import MazeRelated.Maze;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class MazePage extends JFrame {
     // Window size
@@ -29,10 +26,10 @@ public class MazePage extends JFrame {
 
         // If the user choose auto-generation, run the algorithm to generate a maze
         if (!isBlankMaze) {
-            maze = CreateMaze.autoGenMaze(new Maze(rows, cols));
+            maze = CreateMaze.autoGenMaze(rows, cols);
         }
         else {
-            maze = new Maze(rows, cols);
+            maze = CreateMaze.blankMaze(new Maze(rows, cols));
         }
         // The panel in the left on this page
         JPanel leftPnl = new JPanel();
@@ -78,7 +75,7 @@ public class MazePage extends JFrame {
         middlePnl.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, borderColor));
         for (int row = 0; row < rows; row++)
             for (int col = 0; col < cols; col++)
-                middlePnl.add(new CellButton(row, col, maze));
+                middlePnl.add(new CellButton(row, col));
 
         getContentPane().add(middlePnl, BorderLayout.CENTER);
         pack();

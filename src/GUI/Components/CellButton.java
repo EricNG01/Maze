@@ -1,8 +1,6 @@
 package GUI.Components;
 
 import GUI.MazePage;
-import MazeRelated.Cell;
-import MazeRelated.Maze;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,9 +9,8 @@ import java.awt.event.*;
 public class CellButton extends JButton implements ActionListener{
 
     // CONSTANTS for the looking of the buttons
-    public static int WIDTH = 40;
-    public static int HEIGHT = WIDTH;
-    public static int WALL_THICKNESS = 1;
+    private int WIDTH = 40;
+    private int HEIGHT = 40;
     public static Color CELL_COLOUR = new Color(0xFFFCF2);
     public static Color WALL_COLOUR = new Color(0x403D39);
     public static Color BORDER_COLOUR = new Color(0xCCC5B9);
@@ -21,7 +18,7 @@ public class CellButton extends JButton implements ActionListener{
 
 
     private final int row, col;
-    public CellButton(int row, int col, Maze maze) {
+    public CellButton(int row, int col) {
         this.row = row;
         this.col = col;
         addActionListener(this);
@@ -29,20 +26,24 @@ public class CellButton extends JButton implements ActionListener{
         if (MazePage.getMaze().getCell(row, col).getWallState()) setBackground(WALL_COLOUR);
         else setBackground(CELL_COLOUR);
         setBounds( (col + 1) * (WIDTH), (row + 1) * (HEIGHT), WIDTH, HEIGHT );
-        setBorder(BorderFactory.createMatteBorder(
-                WALL_THICKNESS,
-                WALL_THICKNESS,
-                WALL_THICKNESS,
-                WALL_THICKNESS,
-                BORDER_COLOUR));
+
+        setBorder(BorderFactory.createMatteBorder(1,1,1,1, BORDER_COLOUR));
         setFocusPainted(false);
     }
 
-    public int getRow() {
-        return row;
+    /***
+     * Set the width of the cell
+     * @param WIDTH the width of the cell
+     */
+    public void setWIDTH(int WIDTH) {
+        this.WIDTH = WIDTH;
     }
-    public int getCol() {
-        return col;
+    /***
+     * Set the height of the cell
+     * @param HEIGHT the height of the cell
+     */
+    public void setHEIGHT(int HEIGHT) {
+        this.HEIGHT = HEIGHT;
     }
 
     @Override

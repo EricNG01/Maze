@@ -106,7 +106,7 @@ public class HomePage extends JFrame {
                 rowsTextField.setText("");
                 colsTextField.setText("");
                 System.out.println("auto-gen, rows: " + rows + ", cols: " + cols);
-                MazePage mazePage = new MazePage(rows, cols, false);
+                new MazePage(rows, cols, false);
                 setVisible(true);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this,
@@ -128,7 +128,7 @@ public class HomePage extends JFrame {
                 rowsTextField.setText("");
                 colsTextField.setText("");
                 System.out.println("auto-gen, rows: " + rows + ", cols: " + cols);
-                MazePage mazePage = new MazePage(rows, cols, true);
+                new MazePage(rows, cols, true);
                 setVisible(true);
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this,
