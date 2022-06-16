@@ -156,16 +156,7 @@ public class CreateMaze{
     }
 
 
-
-    private static class Node{
-        private final Node parent;
-        private final Cell self;
-        private final int distance;
-        private Node(Cell self, Node parent, int distance) {
-            this.self = self;
-            this.parent = parent;
-            this.distance = distance;
-        }
+    private record Node(Cell self, CreateMaze.Node parent, int distance) {
     }
 
     /**
