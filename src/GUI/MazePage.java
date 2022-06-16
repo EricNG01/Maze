@@ -26,7 +26,7 @@ public class MazePage extends JFrame{
 
     private static Maze maze;
     // JButton
-    private final JButton start, goal;
+    private final JButton start, goal, optimalPath;
     // Flag variables
     private boolean choosingStartingPoint = false;
     private boolean choosingGoal = false;
@@ -63,7 +63,7 @@ public class MazePage extends JFrame{
         JButton logo = createButton("Insert a logo");
         JButton startImage = createButton("Set Starting Point image");
         JButton goalImage = createButton("Set Goal image");
-        JButton optimalPath = createButton("Search an optimal path");
+        optimalPath = createButton("Search an optimal path");
         JButton mazeInfo = createButton("Information for this maze");
         JButton save = createButton("Save the maze");
 
@@ -78,6 +78,7 @@ public class MazePage extends JFrame{
         goalImage.setBounds(10, 520, 180, 50);
         leftPnl.add(goalImage);
         optimalPath.setBounds(10, 610, 180, 50);
+        optimalPath.setEnabled(false);
         leftPnl.add(optimalPath);
         mazeInfo.setBounds(10, 700, 180, 50);
         leftPnl.add(mazeInfo);
@@ -180,6 +181,8 @@ public class MazePage extends JFrame{
                 // Assign false to the flag which indicates the users finish choosing the starting point
                 choosingStartingPoint = false;
                 start.setEnabled(true);
+                // Enable the optimal path button if there exists both starting point and goal
+                optimalPath.setEnabled(maze.getStart() != null && maze.getGoal() != null);
             }
             else if (choosingGoal) {
 
@@ -207,6 +210,8 @@ public class MazePage extends JFrame{
                 // Assign false to the flag which indicates the users finish choosing the starting point
                 choosingGoal = false;
                 goal.setEnabled(true);
+                // Enable the optimal path button if there exists both starting point and goal
+                optimalPath.setEnabled(maze.getStart() != null && maze.getGoal() != null);
             }
             else {
                 if (maze.getCell(row, col).getWallState()) {

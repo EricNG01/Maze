@@ -6,7 +6,7 @@ import java.util.*;
  * This is the class contains all required function for a maze. Like maze generation, dead end calculation etc.
  */
 public class CreateMaze{
-    /***
+    /**
      * Using binary tree algorithm to generate a maze
      * Ref: <a href="https://medium.com/analytics-vidhya/maze-generations-algorithms-and-visualizations-9f5e88a3ae37"> maze generation algorithm</a>
      * @param rows, the height of the maze
@@ -50,7 +50,6 @@ public class CreateMaze{
 
             // Console log for the Current cell
 //            System.out.println("Current: " + current.getRow() + ", " + current.getCol());
-
 
             for (int i = 0; i < 4; i += 3) {
                 // Get the row and col number of east and south neighbours
@@ -101,7 +100,7 @@ public class CreateMaze{
         return maze;
     }
 
-    /***
+    /**
      * Create a blank maze bounded with 4 walls
      * @param maze the current maze on the maze page
      * @return a bounded maze
@@ -120,7 +119,7 @@ public class CreateMaze{
         return maze;
     }
 
-    /***
+    /**
      * Compute the dead end percentage of the maze
      * A dead end cell is defined as a reachable cell (non-wall cell) which has three walls surrounded
      * The equation: (Number of dead end) / (Number of reachable cell) * 100
@@ -152,5 +151,49 @@ public class CreateMaze{
                     if (wall == 3) deadEnd++;
                 }
         return Math.round((double)deadEnd/reachable * 100);
+    }
+
+
+    /**
+     * Compute the optimal solution of the current maze
+     * Decided to use Breadth First Search (BFS)
+     *
+     *
+     * @param maze the current maze on the maze page
+     * @return the optimal solution
+     */
+    public static Object optimalSolution(Maze maze) {
+        // Get the starting point and goal from the maze
+        Cell start = maze.getStart();
+        Cell goal = maze.getGoal();
+
+        // Pre-processing
+        // Mark all the wall as visited
+        int totalCell = maze.getRows() * maze.getCols();
+        int visited = 0;
+        boolean[][] isVisited = new boolean[maze.getRows()][maze.getCols()];
+        for (int row = 0; row < maze.getRows(); row++)
+            for (int col = 0; col < maze.getCols(); col++) {
+                isVisited[row][col] = maze.getCell(row, col).getWallState();
+                if (isVisited[row][col]) visited++;
+            }
+
+        int[] dx = {0, 1, 0, -1};
+        int[] dy = {-1, 0, 1, 0};
+        Cell current = start;
+        while(true) {
+            // Found an optimal path
+            if (current == goal) {
+                break;
+            }
+            // Didn't find an optimal path
+            else if (visited == totalCell) {
+                break;
+            }
+            else {
+
+            }
+        }
+        return new Object();
     }
 }
