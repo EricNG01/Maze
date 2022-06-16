@@ -2,6 +2,9 @@ package MazeRelated;
 
 import java.util.*;
 
+/**
+ * This is the class contains all required function for a maze. Like maze generation, dead end calculation etc.
+ */
 public class CreateMaze{
     /***
      * Using binary tree algorithm to generate a maze

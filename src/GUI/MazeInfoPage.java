@@ -5,6 +5,9 @@ import MazeRelated.CreateMaze;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * It is the maze info page class. Users can read the important data about the current maze like row and col number, dead end percentage etc.
+ */
 public class MazeInfoPage extends JFrame {
     Dimension windowSize = new Dimension(250, 500);
     // Background color for the panels
@@ -12,6 +15,11 @@ public class MazeInfoPage extends JFrame {
     // Border color for the panels
     public Color borderColor = new Color(0xCCC5B9);
 
+    /**
+     * This is the constructor of the maze info page.
+     * @param rows the height of the maze
+     * @param cols the width of the maze
+     */
     public MazeInfoPage(int rows, int cols) {
         setTitle("Maze Information");
         setMinimumSize(windowSize);

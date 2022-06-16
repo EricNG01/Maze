@@ -5,6 +5,10 @@ import GUI.MazePage;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This is the CellButton class which extends JButton class. This the class for creating CellButton object.
+ * Users can click on the CellButton in order to edit the maze.
+ */
 public class CellButton extends JButton{
 
     // CONSTANTS for the looking of the buttons
@@ -29,14 +33,14 @@ public class CellButton extends JButton{
         setFocusPainted(false);
     }
 
-    /***
+    /**
      * Set the width of the cell
      * @param width the width of the cell
      */
     public static void setWIDTH(int width) {
         WIDTH = width;
     }
-    /***
+    /**
      * Set the height of the cell
      * @param height the height of the cell
      */
@@ -44,11 +48,18 @@ public class CellButton extends JButton{
         HEIGHT = height;
     }
 
-
+    /**
+     * The getter method for the row number of the cell
+     * @return the row number of the cell
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * The getter method for the column number of the cell
+     * @return the column number of the cell
+     */
     public int getCol() {
         return col;
     }

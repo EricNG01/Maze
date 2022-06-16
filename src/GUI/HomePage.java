@@ -19,6 +19,11 @@ public class HomePage extends JFrame {
     private final int MAX_COLS = 101;
     private final int MIN_ROWS = 5;
     private final int MIN_COLS = 5;
+
+    /**
+     * This is the constructor to create the home page of the software
+     * Users can create different size and type of maze in this page
+     */
     public HomePage() {
 
         setTitle("Setup Maze");

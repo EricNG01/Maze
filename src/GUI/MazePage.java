@@ -27,6 +27,13 @@ public class MazePage extends JFrame {
     public static Color GOAL_COLOUR = new Color(0xEB5E28);
 
     private static Maze maze;
+
+    /**
+     * Constructor of the MazePage class. It is a window for drawing a maze
+     * @param rows height of the maze
+     * @param cols width of the maze
+     * @param isBlankMaze true if user select a blank maze, false otherwise
+     */
     public MazePage(int rows, int cols, boolean isBlankMaze) {
 
         setTitle("Maze");
@@ -168,6 +175,10 @@ public class MazePage extends JFrame {
         };
     }
 
+    /**
+     * Getter method for the maze currently displayed on the maze page
+     * @return the current maze
+     */
     public static Maze getMaze() {
         return maze;
     }
