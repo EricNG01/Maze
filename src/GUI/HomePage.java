@@ -12,6 +12,9 @@ import java.awt.event.MouseEvent;
 public class HomePage extends JFrame {
     // Background color for the homePage
     public Color bgColor = new Color(0xFFFCF2);
+    // Border color for the panels
+    public Color borderColor = new Color(0xCCC5B9);
+    public Color buttonColor = new Color(0x403D39);
 
     public HomePage() {
 
@@ -26,11 +29,9 @@ public class HomePage extends JFrame {
 
         final JFormattedTextField rowsTextField = new JFormattedTextField();
         final JFormattedTextField colsTextField = new JFormattedTextField();
-        JButton blank = new JButton("Blank");
-        JButton autoGen = new JButton("Auto");
 
-        blank.setFocusPainted(false);
-        autoGen.setFocusPainted(false);
+        JButton blank = createButton("Blank");
+        JButton autoGen = createButton("Auto");
 
 
         // Home page interface setting
@@ -43,7 +44,6 @@ public class HomePage extends JFrame {
         gbc.gridy = 0;
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.anchor = GridBagConstraints.LINE_END;
         mazeSetupPnl.add(new JLabel("ROWS"), gbc);
         gbc.gridy = 1;
         mazeSetupPnl.add(new JLabel("COLUMNS"), gbc);
@@ -62,6 +62,8 @@ public class HomePage extends JFrame {
         getContentPane().add(mazeSetupPnl, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
+        setLocation(new Point(30, 30));
+        setResizable(false);
         setVisible(true);
 
 
@@ -121,7 +123,7 @@ public class HomePage extends JFrame {
             try {
                 int rows = Integer.parseInt(rowsTextField.getText());
                 int cols = Integer.parseInt(colsTextField.getText());
-                if ( rows < 2 || rows > 100 || cols < 2 || cols > 100)
+                if ( rows < 5 || rows > 100 || cols < 5 || cols > 100)
                     throw new textFieldException();
                 rowsTextField.setText("");
                 colsTextField.setText("");
@@ -134,11 +136,19 @@ public class HomePage extends JFrame {
                         "", JOptionPane.ERROR_MESSAGE);
             } catch (textFieldException e) {
                 JOptionPane.showMessageDialog(this,
-                        "Please enter a valid value for rows and columns\nRange: 2 - 100",
+                        "Please enter a valid value for rows and columns\nRange: 5 - 100",
                         "", JOptionPane.ERROR_MESSAGE);
             }
         });
         // End of components wiring
 
+    }
+    private JButton createButton(String title) {
+        JButton btn = new JButton(title);
+        btn.setBackground(buttonColor);
+        btn.setForeground(bgColor);
+        btn.setFocusPainted(false);
+        btn.setRolloverEnabled(false);
+        return btn;
     }
 }

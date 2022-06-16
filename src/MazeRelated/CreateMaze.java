@@ -30,7 +30,7 @@ public class CreateMaze {
 
         // Randomly choose the starting cell
         Random rand = new Random();
-        Cell current = new Cell(rand.nextInt(rows), rand.nextInt(cols));
+        Cell current = new Cell(rand.nextInt(rows - 2) + 1, rand.nextInt(cols - 2) + 1);
         visited[current.getRow()][current.getCol()] = true;
         sumVisited++;
         path.push(current);
@@ -70,13 +70,17 @@ public class CreateMaze {
 
                 direction.remove(index);
                 neighbours.remove(next);
-                for(Cell c : neighbours.values()) {
-                    maze.getCell(c.getRow(), c.getCol()).setWallState(true);
-                    visited[c.getRow()][c.getCol()] = true;
+
+                if (neighbours.size() > 1) {
+                    index = rand.nextInt(direction.size());
+                    next = direction.get(index);
+                    maze.getCell(neighbours.get(next).getRow(), neighbours.get(next).getCol()).setWallState(true);
                 }
+
 
                 current = nextCell;
                 path.push(current);
+                sumVisited++;
                 visited[current.getRow()][current.getCol()] = true;
             }
 
