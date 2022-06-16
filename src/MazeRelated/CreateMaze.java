@@ -2,6 +2,8 @@ package MazeRelated;
 
 import java.util.*;
 
+import static java.lang.Math.abs;
+
 /**
  * This is the class contains all required function for a maze. Like maze generation, dead end calculation etc.
  */
@@ -154,6 +156,18 @@ public class CreateMaze{
     }
 
 
+
+    private static class Node{
+        private final Node parent;
+        private final Cell self;
+        private final int distance;
+        private Node(Cell self, Node parent, int distance) {
+            this.self = self;
+            this.parent = parent;
+            this.distance = distance;
+        }
+    }
+
     /**
      * Compute the optimal solution of the current maze
      * Decided to use Breadth First Search (BFS)
@@ -162,7 +176,7 @@ public class CreateMaze{
      * @param maze the current maze on the maze page
      * @return the optimal solution
      */
-    public static Object optimalSolution(Maze maze) {
+    public static Stack<Node> optimalSolution(Maze maze) {
         // Get the starting point and goal from the maze
         Cell start = maze.getStart();
         Cell goal = maze.getGoal();
@@ -181,19 +195,68 @@ public class CreateMaze{
         int[] dx = {0, 1, 0, -1};
         int[] dy = {-1, 0, 1, 0};
         Cell current = start;
+        isVisited[current.getRow()][current.getCol()] = true;
+
+        Node lastNode = new Node(start, null, 0);
+        LinkedList<Node> nodes = new LinkedList<>();
+        nodes.push(lastNode);
+
         while(true) {
-            // Found an optimal path
+
             if (current == goal) {
+
+                Stack<Cell> optimalPath = new Stack<>();
+                while (lastNode != null) {
+                    optimalPath.push(lastNode.self);
+                    lastNode = lastNode.parent;
+                }
+                for (Cell c: optimalPath)
+                    System.out.println(c.getRow() + ", " + c.getCol());
+                System.out.println("Solved");
                 break;
             }
-            // Didn't find an optimal path
-            else if (visited == totalCell) {
+            else if (nodes.isEmpty()) {
+                System.out.println("Didn't find a solution");
                 break;
             }
             else {
+                for (int k = 0; k < nodes.size(); k++) {
+//                    System.out.println("current nodes: " + current.getRow() + ", " + current.getCol());
+                    lastNode = nodes.get(k);
 
+                    int currentCol = lastNode.self.getCol();
+                    int currentRow = lastNode.self.getRow();
+
+
+                    for (int i = 0; i < 4; i++) {
+                        int nextCol = currentCol + dx[i];
+                        int nextRow = currentRow + dy[i];
+
+                        if (nextCol < 0 || nextCol > maze.getCols() - 1
+                                || nextRow < 0 || nextRow > maze.getRows() - 1
+                                || isVisited[nextRow][nextCol])
+                            continue;
+
+                        nodes.add( new Node ( maze.getCell(nextRow, nextCol), lastNode,
+                                abs(maze.getCell(nextRow, nextCol).getRow() - current.getRow()) + abs(maze.getCell(nextRow, nextCol).getCol() - current.getCol())) );
+
+                        isVisited[nextRow][nextCol] = true;
+
+                        current = maze.getCell(nextRow, nextCol);
+
+                    }
+                    nodes.remove(k);
+
+
+//                    for (Node nn: nodes) {
+//                        System.out.println(nn.self.getRow() + ", " + nn.self.getCol());
+//                    }
+//                    System.out.println();
+                }
             }
         }
-        return new Object();
+
+        return new Stack<>();
+
     }
 }

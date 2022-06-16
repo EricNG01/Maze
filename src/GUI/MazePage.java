@@ -131,6 +131,7 @@ public class MazePage extends JFrame{
             choosingGoal = true;
             goal.setEnabled(false);
         });
+        optimalPath.addActionListener(e -> CreateMaze.optimalSolution(maze));
         // End of components wiring
 
     }
