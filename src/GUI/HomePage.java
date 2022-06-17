@@ -153,6 +153,8 @@ public class HomePage extends JFrame {
                 String author = authorTextField.getText();
                 if ( rows < MIN_ROWS || rows > MAX_ROWS || cols < MIN_COLS || cols > MAX_COLS || rows % 2 == 0 || cols % 2 == 0)
                     throw new textFieldException();
+                mazeNameTextField.setText("");
+                authorTextField.setText("");
                 rowsTextField.setText("");
                 colsTextField.setText("");
 

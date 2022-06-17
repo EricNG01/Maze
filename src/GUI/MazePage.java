@@ -1,12 +1,14 @@
 package GUI;
 
 import GUI.Components.CellButton;
+import MazeRelated.Cell;
 import MazeRelated.CreateMaze;
 import MazeRelated.Maze;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.Stack;
 
 public class MazePage extends JFrame{
     // Window size
@@ -23,6 +25,7 @@ public class MazePage extends JFrame{
     public static Color WALL_COLOUR = new Color(0x403D39);
     public static Color START_COLOUR = new Color(0xF38F68);
     public static Color GOAL_COLOUR = new Color(0xEB5E28);
+    public static Color SOLUTION_COLOUR = new Color(0xF7B9A1);
 
     private static Maze maze;
     // JButton
@@ -30,6 +33,7 @@ public class MazePage extends JFrame{
     // Flag variables
     private boolean choosingStartingPoint = false;
     private boolean choosingGoal = false;
+    private boolean showOptimalPath = false;
 
     /**
      * Constructor of the MazePage class. It is a window for drawing a maze
@@ -131,7 +135,42 @@ public class MazePage extends JFrame{
             choosingGoal = true;
             goal.setEnabled(false);
         });
-        optimalPath.addActionListener(e -> CreateMaze.optimalSolution(maze));
+        optimalPath.addActionListener(e -> {
+            Stack<Cell> path = CreateMaze.optimalSolution(maze);
+            if (showOptimalPath) {
+                optimalPath.setText("Search an optimal path");
+                showOptimalPath = false;
+
+                assert path != null;
+                for (Cell c: path) {
+                    if (c != maze.getStart() && c != maze.getGoal()) {
+                        cellButtons[c.getRow()][c.getCol()].setEnabled(true);
+                        cellButtons[c.getRow()][c.getCol()].setBackground(CELL_COLOUR);
+                    }
+
+                }
+            }
+            else {
+                if (path != null) {
+                    optimalPath.setText("Hide an optimal path");
+                    showOptimalPath = true;
+
+                    for (Cell c: path) {
+                        if (c != maze.getStart() && c != maze.getGoal()) {
+                            cellButtons[c.getRow()][c.getCol()].setEnabled(false);
+                            cellButtons[c.getRow()][c.getCol()].setBackground(SOLUTION_COLOUR);
+                        }
+
+                    }
+
+                }
+                else {
+                    JOptionPane.showMessageDialog(this, "No solution path is found");
+                }
+            }
+            repaint();
+            revalidate();
+        });
         // End of components wiring
 
     }
