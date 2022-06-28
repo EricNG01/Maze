@@ -23,7 +23,6 @@ public class CellButton extends JButton{
     public CellButton(int row, int col, int offsetX, int offsetY) {
         this.row = row;
         this.col = col;
-//        addActionListener(this);
 
         if (MazePage.getMaze().getCell(row, col).getWallState()) setBackground(WALL_COLOUR);
         else setBackground(CELL_COLOUR);

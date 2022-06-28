@@ -41,9 +41,9 @@ public class MazeInfoPage extends JFrame {
         JLabel deadEndLabel = new JLabel("Dead end percentage: "
                 + CreateMaze.deadEndPercentage(MazePage.getMaze()) + "%");
 
-        JLabel createdDatetimeLabel = new JLabel("Created DateTime:"
+        JLabel createdDatetimeLabel = new JLabel("Created DateTime: "
                 + MazePage.getMaze().getCreatedDatetime().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")));
-        JLabel lastEditedDatetimeLabel = new JLabel("Last Edited DateTime:"
+        JLabel lastEditedDatetimeLabel = new JLabel("Last Edited DateTime: "
                 + MazePage.getMaze().getLastEditedDatetime().format(DateTimeFormatter.ofPattern("dd-MM-yy HH:mm")));
 
         mazeNameLabel.setBounds(10, 20, 230, 30);

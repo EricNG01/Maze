@@ -4,6 +4,7 @@ import GUI.Components.CellButton;
 import MazeRelated.Cell;
 import MazeRelated.CreateMaze;
 import MazeRelated.Maze;
+import MazeRelated.MazeCollection;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +29,7 @@ public class MazePage extends JFrame{
     public static Color SOLUTION_COLOUR = new Color(0xF7B9A1);
 
     private static Maze maze;
+    private final static MazeCollection mazeCollection = new MazeCollection();
     // JButton
     private final JButton start, goal, optimalPath;
     // Flag variables
@@ -130,10 +132,12 @@ public class MazePage extends JFrame{
         start.addActionListener(e -> {
             choosingStartingPoint = true;
             start.setEnabled(false);
+            goal.setEnabled(false);
         });
         goal.addActionListener(e -> {
             choosingGoal = true;
             goal.setEnabled(false);
+            start.setEnabled(false);
         });
         optimalPath.addActionListener(e -> {
             Stack<Cell> path = CreateMaze.optimalSolution(maze);
@@ -170,6 +174,14 @@ public class MazePage extends JFrame{
             }
             repaint();
             revalidate();
+        });
+        save.addActionListener(e -> {
+            int index = mazeCollection.searchMaze(maze);
+            if (index == -1) mazeCollection.addMaze(maze);
+            else mazeCollection.updateMaze(maze, index);
+            System.out.println(index);
+            mazeCollection.printAllMazes();
+            System.out.println("Testing");
         });
         // End of components wiring
 
@@ -221,6 +233,7 @@ public class MazePage extends JFrame{
                 // Assign false to the flag which indicates the users finish choosing the starting point
                 choosingStartingPoint = false;
                 start.setEnabled(true);
+                goal.setEnabled(true);
                 // Enable the optimal path button if there exists both starting point and goal
                 optimalPath.setEnabled(maze.getStart() != null && maze.getGoal() != null);
             }
@@ -250,6 +263,7 @@ public class MazePage extends JFrame{
                 // Assign false to the flag which indicates the users finish choosing the starting point
                 choosingGoal = false;
                 goal.setEnabled(true);
+                start.setEnabled(true);
                 // Enable the optimal path button if there exists both starting point and goal
                 optimalPath.setEnabled(maze.getStart() != null && maze.getGoal() != null);
             }
